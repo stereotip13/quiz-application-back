@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './User/user.module';
+import { UserModule } from './module/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import configurations from './configurations';
