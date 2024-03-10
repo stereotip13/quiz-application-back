@@ -4,10 +4,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 
 @Controller('/user')
 export class UserController {
-  constructor(private readonly UserService: UserService) {}
+  constructor(private readonly userService: UserService) {}
   @Post('create-user')
   createUsers(@Body() dto: CreateUserDTO) {
     console.log(dto);
-    return this.UserService.createUser(dto);
+    return this.userService.createUser(dto);
   }
 }

@@ -8,6 +8,6 @@ import { User } from './models/user.model';
   imports: [SequelizeModule.forFeature([User])], //для работы с запросами к БД, forFeature -значит вся логика используется в рамках текущего модуля
   controllers: [UserController],
   providers: [UserService],
-  exports: [UserService], //чтобы использовать методы
+  exports: [UserService],
 })
 export class UserModule {}
