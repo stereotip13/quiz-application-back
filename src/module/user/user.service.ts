@@ -14,7 +14,7 @@ export class UserService {
   }
   //ниже обращаемся к БД и передаем параметры поиска
   async findUserByName(name: string) {
-    return this.userRepository.findOne({ where: { name } });
+    return this.userRepository.findOne({ where: { name: name } });
   }
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
     dto.password = await this.hashPassword(dto.password);
@@ -26,5 +26,12 @@ export class UserService {
       role: dto.role,
     });
     return dto;
+  }
+  //ниже опишем способ получить юзера, не передавая пароль (приватные данные)
+  async publicUser(name: string) {
+    return this.userRepository.findOne({
+      where: { name },
+      attributes: { exclude: ['password'] },
+    });
   }
 }

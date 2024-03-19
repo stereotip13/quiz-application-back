@@ -26,7 +26,12 @@ export class AuthService {
       existUser.password,
     ); //если пароль правильный тру
     if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
-    const token = await this.tokenService.genereteJwtToken(dto.name); //внутрь передаем данные для генер токена, к примеру имя
-    return { ...existUser, token };
+    const userData = {
+      name: existUser.name,
+      role: existUser.role,
+    };
+    const token = await this.tokenService.genereteJwtToken(userData); //внутрь передаем данные для генер токена, к примеру имя
+    const user = await this.userService.publicUser(dto.name);
+    return { ...user, token };
   }
 }
