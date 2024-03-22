@@ -3,14 +3,14 @@ import { CreateUserDTO, updateUserDto } from './dto';
 import { UserService } from './user.service';
 import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
 
-@Controller('/user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Post('create-user')
-  createUsers(@Body() dto: CreateUserDTO) {
-    console.log(dto);
-    return this.userService.createUser(dto);
-  }
+  // @Post('create-user')
+  // createUsers(@Body() dto: CreateUserDTO) {
+  //   console.log(dto);
+  //   return this.userService.createUser(dto);
+  // }
   @UseGuards(JwtAuthGuard)
   @Patch()
   updateUser(@Body() updateDto: updateUserDto, @Req() request) {

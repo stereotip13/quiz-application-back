@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import configurations from './configurations';
 import { User } from './module/user/models/user.model';
 import { AuthModule } from './module/auth/auth.module';
+import { TokenModule } from './module/token/token.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthModule } from './module/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    TokenModule,
   ],
 })
 export class AppModule {}
