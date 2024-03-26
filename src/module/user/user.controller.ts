@@ -1,7 +1,7 @@
 import { JwtAuthGuard } from 'src/guards/jwt-guard';
-import { CreateUserDTO, updateUserDto } from './dto';
+import { updateUserDto } from './dto';
 import { UserService } from './user.service';
-import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Patch, Req, UseGuards } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -14,7 +14,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Patch()
   updateUser(@Body() updateDto: updateUserDto, @Req() request) {
-    const user = request.user;
+    const user = request;
     console.log(user);
+    //return this.userService.updateUser(user.name, updateDto);
   }
 }
