@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDTO, updateUserDto } from './dto';
+import { CreateUserDTO, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -34,7 +34,12 @@ export class UserService {
       attributes: { exclude: ['password'] },
     });
   }
-  async updateUser(name: string, dto: updateUserDto) {
-    return this.userRepository.update(dto, { where: { name: name } });
+  async updateUser(userId: number, dto: UpdateUserDto): Promise<UpdateUserDto> {
+    try {
+      this.userRepository.update(dto, { where: { id: userId } });
+      return dto;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 }

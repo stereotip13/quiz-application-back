@@ -22,7 +22,7 @@ export class CreateUserDTO {
   @IsString()
   password: string;
 }
-export class updateUserDto {
+export class UpdateUserDto {
   @ApiProperty() //add info into swagger
   @IsString()
   otdel: string;
