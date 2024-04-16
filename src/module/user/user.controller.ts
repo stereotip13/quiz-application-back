@@ -1,12 +1,13 @@
-import { JwtAuthGuard } from 'src/guards/jwt-guard';
 import { UpdateUserDto } from './dto';
 import { UserService } from './user.service';
 import { Body, Controller, Patch, Req, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   // @Post('create-user')
   // createUsers(@Body() dto: CreateUserDTO) {
   //   console.log(dto);
@@ -14,7 +15,7 @@ export class UserController {
   // }
   @ApiTags('API')
   @ApiResponse({ status: 200, type: UpdateUserDto })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Patch()
   updateUser(
     @Body() updateDto: UpdateUserDto,
