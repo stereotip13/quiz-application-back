@@ -29,6 +29,7 @@ export class AuthService {
     ); //если пароль правильный тру
     if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
     const user = await this.userService.publicUser(dto.name);
+    console.log (user)
     const payload = { userName: user.dataValues.name, sub: user.dataValues.id };
     return { ...user.dataValues, token: this.jwtService.sign(payload) };
   }
