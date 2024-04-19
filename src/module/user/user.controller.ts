@@ -13,7 +13,7 @@ export class UserController {
   //   console.log(dto);
   //   return this.userService.createUser(dto);
   // }
-  @ApiTags('API')
+  @ApiTags('API users')
   @ApiResponse({ status: 200, type: UpdateUserDto })
   @UseGuards(AuthGuard('jwt'))
   @Patch()

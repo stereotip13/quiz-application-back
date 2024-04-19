@@ -4,28 +4,31 @@ import { AuthService } from './auth.service';
 import { UserLoginDTO } from './dto';
 import { AuthUserResponse } from './response';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/guards/jwt-guard';
+//import { JwtAuthGuard } from 'src/guards/jwt-guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
+  //чтобы сервис можно было использовать внутри контроллера необходимо сделать инъекцию
   constructor(private readonly authService: AuthService) {}
 
-  @ApiTags('API') //move api inside swagger
-  @ApiResponse({ status: 201, type: CreateUserDTO }) //move api inside swagger
+  @ApiTags('API auth') //swagger описание контроллера
+  @ApiResponse({ status: 201, type: CreateUserDTO }) //swagger api статус ответа и какие данные вернет
   @HttpCode(200)
   @Post('register')
   register(@Body() dto: CreateUserDTO): Promise<CreateUserDTO> {
     return this.authService.registerUsers(dto);
   }
 
-  @ApiTags('API') //move api inside swagger
-  @ApiResponse({ status: 200, type: AuthUserResponse }) //move api inside swagger
+  @ApiTags('API auth') //swagger описание контроллера
+  @ApiResponse({ status: 200, type: AuthUserResponse }) //swagger api статус ответа и какие данные вернет
   @HttpCode(201)
   @Post('login')
   login(@Body() dto: UserLoginDTO): Promise<AuthUserResponse> {
     return this.authService.loginUser(dto);
   }
-  @UseGuards(JwtAuthGuard)
+  @ApiTags('API private auth')
+  @UseGuards(AuthGuard('jwt'))
   @Post('test')
   test() {
     return true;

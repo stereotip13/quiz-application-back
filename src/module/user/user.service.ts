@@ -6,6 +6,7 @@ import { CreateUserDTO, UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService {
+  //ниже внедряем модель из БД
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
   ) {}
@@ -13,8 +14,8 @@ export class UserService {
     return bcrypt.hash(password, 10);
   }
   //ниже обращаемся к БД и передаем параметры поиска
-  async findUserByName(name: string) {
-    return this.userRepository.findOne({ where: { name: name } });
+  async findUserBySnils(snils: string) {
+    return this.userRepository.findOne({ where: { snils: snils } });
   }
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
     dto.password = await this.hashPassword(dto.password);
@@ -24,13 +25,14 @@ export class UserService {
       name: dto.name,
       rating: dto.rating,
       role: dto.role,
+      snils: dto.snils
     });
     return dto;
   }
   //ниже опишем способ получить юзера, не передавая пароль (приватные данные)
-  async publicUser(name: string) {
+  async publicUser(snils: string) {
     return this.userRepository.findOne({
-      where: { name },
+      where: { snils },
       attributes: { exclude: ['password'] },
     });
   }

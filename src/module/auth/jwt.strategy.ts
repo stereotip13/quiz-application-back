@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   //payload = info from tonek in login method
   async validate(payload: any) {
-    const user = await this.userService.findUserByName(payload.userName);
+    const user = await this.userService.findUserBySnils(payload.userName);
     if (!user) {
       throw new UnauthorizedException();
     }

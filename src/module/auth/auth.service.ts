@@ -15,21 +15,21 @@ export class AuthService {
   ) {}
 
   async registerUsers(dto: CreateUserDTO): Promise<CreateUserDTO> {
-    const existUser = await this.userService.findUserByName(dto.name); //ищем пользователя в базе данных
+    const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
     if (existUser) throw new BadRequestException(AppError.USER_EXIST); //если не нах выводим ошибку, что п сущ-т
     return this.userService.createUser(dto);
   }
 
   async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
-    const existUser = await this.userService.findUserByName(dto.name); //ищем пользователя в базе данных
+    const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
     if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST); //если не нах выводим ошибку, что п не сущ-т
     const validatePassword = await bcrypt.compare(
       dto.password,
       existUser.password,
     ); //если пароль правильный тру
     if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
-    const user = await this.userService.publicUser(dto.name);
-    const payload = { userName: user.dataValues.name, sub: user.dataValues.id };
+    const user = await this.userService.publicUser(dto.snils);
+    const payload = { userName: user.dataValues.snils , sub: user.dataValues.id }; //тут ошибка!!!
     return { ...user.dataValues, token: this.jwtService.sign(payload) };
   }
 }
