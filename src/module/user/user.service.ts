@@ -21,10 +21,10 @@ export class UserService {
     dto.password = await this.hashPassword(dto.password);
     await this.userRepository.create({
       password: dto.password,
-      otdel: dto.otdel,
+      //otdel: dto.otdelр,//убал из обязательных к введению пользователем, генерится автоматом
       name: dto.name,
-      rating: dto.rating,
-      role: dto.role,
+      //rating: dto.rating,//убал из обязательных к введению пользователем, генерится автоматом
+     // role: dto.role,//убал из обязательных к введению пользователем, генерится автоматом
       snils: dto.snils
     });
     return dto;
@@ -38,10 +38,19 @@ export class UserService {
   }
   async updateUser(userId: number, dto: UpdateUserDto): Promise<UpdateUserDto> {
     try {
-      this.userRepository.update(dto, { where: { id: userId } });
+      await this.userRepository.update(dto, { where: { id: userId } });
       return dto;
     } catch (e) {
       throw new Error(e);
+    }
+  }
+  //чей токен того и удаляем 
+  async deleteUser (userId: number): Promise<boolean> {
+    try {
+      await this.userRepository.destroy({where: { id: userId }})
+      return true
+    }catch (e) {
+      throw new Error(e)
     }
   }
 }
