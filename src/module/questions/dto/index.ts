@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 //ДТО это объект, который не содержит в себе никакой логики и имеет только поля, эти объекты предназначены для обмена данными между подсистемами(клиент серв, серв серв)
 export class CreateQuestionDTO {
   @ApiProperty() //add info into swagger

@@ -1,6 +1,13 @@
 import { UpdateUserDto } from './dto';
 import { UserService } from './user.service';
-import { Body, Controller, Delete, Patch, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -14,7 +21,7 @@ export class UserController {
   //   return this.userService.createUser(dto);
   // }
   @ApiTags('API users update')
-  @ApiOperation({summary:'обновление данных пользователя'})
+  @ApiOperation({ summary: 'обновление данных пользователя' })
   @ApiResponse({ status: 200, type: UpdateUserDto })
   @UseGuards(AuthGuard('jwt'))
   @Patch()
@@ -29,8 +36,8 @@ export class UserController {
   @ApiTags('API users delete')
   @UseGuards(AuthGuard('jwt'))
   @Delete()
-  deleteUser (@Req() request): Promise<boolean>  {
-    const user = request.user
-    return this.userService.deleteUser(user.id)
+  deleteUser(@Req() request): Promise<boolean> {
+    const user = request.user;
+    return this.userService.deleteUser(user.id);
   }
 }

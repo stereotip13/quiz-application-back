@@ -24,8 +24,8 @@ export class UserService {
       //otdel: dto.otdelр,//убал из обязательных к введению пользователем, генерится автоматом
       name: dto.name,
       //rating: dto.rating,//убал из обязательных к введению пользователем, генерится автоматом
-     // role: dto.role,//убал из обязательных к введению пользователем, генерится автоматом
-      snils: dto.snils
+      // role: dto.role,//убал из обязательных к введению пользователем, генерится автоматом
+      snils: dto.snils,
     });
     return dto;
   }
@@ -44,13 +44,13 @@ export class UserService {
       throw new Error(e);
     }
   }
-  //чей токен того и удаляем 
-  async deleteUser (userId: number): Promise<boolean> {
+  //чей токен того и удаляем
+  async deleteUser(userId: number): Promise<boolean> {
     try {
-      await this.userRepository.destroy({where: { id: userId }})
-      return true
-    }catch (e) {
-      throw new Error(e)
+      await this.userRepository.destroy({ where: { id: userId } });
+      return true;
+    } catch (e) {
+      throw new Error(e);
     }
   }
 }
