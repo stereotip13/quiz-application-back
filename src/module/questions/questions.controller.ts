@@ -23,6 +23,7 @@ export class QuestionsController {
   }
 
   @ApiTags('delete questions')
+  //ParseIntPipe — это встроенный в NestJS pipe, который автоматически преобразует входную строку в целое число и выбрасывает исключение, если значение не может быть преобразовано.
   @Delete(':id')
   delquest(@Param('id', ParseIntPipe) id: number): Promise<boolean> {
     return this.questionService.deleteQuestion(id);

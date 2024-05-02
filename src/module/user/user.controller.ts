@@ -4,6 +4,8 @@ import {
   Body,
   Controller,
   Delete,
+  Param,
+  ParseIntPipe,
   Patch,
   Req,
   UseGuards,
@@ -34,10 +36,8 @@ export class UserController {
     return this.userService.updateUser(user.id, updateDto);
   }
   @ApiTags('API users delete')
-  @UseGuards(AuthGuard('jwt'))
-  @Delete()
-  deleteUser(@Req() request): Promise<boolean> {
-    const user = request.user;
-    return this.userService.deleteUser(user.id);
+  @Delete(':id')
+  deleteUser(@Param('id',ParseIntPipe) id:number): Promise<boolean> {
+    return this.userService.deleteUser(id);
   }
 }

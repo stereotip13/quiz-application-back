@@ -20,7 +20,7 @@ export class AuthController {
     return this.authService.registerUsers(dto);
   }
 
-  @ApiTags('API auth') //swagger описание контроллера
+  @ApiTags('API login') //swagger описание контроллера
   @ApiResponse({ status: 200, type: AuthUserResponse }) //swagger api статус ответа и какие данные вернет
   @HttpCode(201)
   @Post('login')
