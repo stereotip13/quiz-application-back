@@ -21,6 +21,10 @@ export class CreateUserDTO {
   @ApiProperty() //add info into swagger
   @IsString()
   password: string;
+
+  @ApiProperty() //add info into swagger
+  @IsString()
+  snils: string;
 }
 export class UpdateUserDto {
   @ApiProperty() //add info into swagger
