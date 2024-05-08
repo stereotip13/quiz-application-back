@@ -35,9 +35,9 @@ export class UserService {
       attributes: { exclude: ['password'] },
     });
   }
-  async updateUser(userId: number, dto: UpdateUserDto): Promise<UpdateUserDto> {
+  async updateUser(snils: string, dto: UpdateUserDto): Promise<UpdateUserDto> {
     try {
-      this.userRepository.update(dto, { where: { id: userId } });
+      this.userRepository.update(dto, { where: { snils: snils } });
       return dto;
     } catch (e) {
       throw new Error(e);

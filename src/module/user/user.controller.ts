@@ -21,7 +21,7 @@ export class UserController {
     @Req() request,
   ): Promise<UpdateUserDto> {
     const user = request.user;
-    console.log(user);
-    return this.userService.updateUser(user.id, updateDto);
+    console.log('payload из jwt, который передается в updateUser:',user);
+    return this.userService.updateUser(user.snils, updateDto);
   }
 }

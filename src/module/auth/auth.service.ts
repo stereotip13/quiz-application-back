@@ -34,7 +34,7 @@ export class AuthService {
       if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA) //если пароль не правильный возвращаем ошибку
       const userData = {
           name: existUser.name,
-          role: existUser.snils,
+          snils: existUser.snils,
         };
 
       //создаем токен для нашего юзера и внутрь передаем данные для генер токена, к примеру имя
