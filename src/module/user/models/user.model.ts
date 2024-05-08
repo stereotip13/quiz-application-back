@@ -12,4 +12,6 @@ export class User extends Model {
   name: string;
   @Column
   password: string;
+  @Column
+  snils: string;
 }

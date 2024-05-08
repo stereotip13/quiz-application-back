@@ -42,4 +42,8 @@ export class UpdateUserDto {
   @ApiProperty() //add info into swagger
   @IsString()
   name: string;
+
+  @ApiProperty() //add info into swagger
+  @IsString()
+  snils: string;
 }

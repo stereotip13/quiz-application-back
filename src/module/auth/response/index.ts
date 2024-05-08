@@ -24,5 +24,9 @@ export class AuthUserResponse {
 
   @ApiProperty()
   @IsString()
-  token: string;
+  snils: string;
+
+  @ApiProperty()
+  @IsString()
+  token: string
 }

@@ -14,24 +14,34 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
   async registerUsers(dto: CreateUserDTO): Promise<CreateUserDTO> {
-    const existUser = await this.userService.findUserByName(dto.name); //ищем пользователя в базе данных
-    if (existUser) throw new BadRequestException(AppError.USER_EXIST); //если не нах выводим ошибку, что п сущ-т
-    return this.userService.createUser(dto);
+    try {
+      const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
+      if (existUser) throw new BadRequestException(AppError.USER_EXIST); //если не нах выводим ошибку, что п сущ-т
+      return this.userService.createUser(dto);
+    }catch(e){
+      throw new BadRequestException(AppError.USER_EXIST)
+    }
   }
   async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
-    const existUser = await this.userService.findUserByName(dto.name); //ищем пользователя в базе данных
-    if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST); //если не нах выводим ошибку, что п не сущ-т
-    const validatePassword = await bcrypt.compare(
-      dto.password,
-      existUser.password,
-    ); //если пароль правильный тру
-    if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
-    const userData = {
-      name: existUser.name,
-      role: existUser.role,
-    };
-    const token = await this.tokenService.genereteJwtToken(userData); //внутрь передаем данные для генер токена, к примеру имя
-    const user = await this.userService.publicUser(dto.name);
-    return { ...user, token };
+    try {
+      const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
+      if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST); //если не нах выводим ошибку, что п не сущ-т
+      //валадция пароля
+      const validatePassword = await bcrypt.compare(
+        dto.password,
+        existUser.password,
+      ); //если пароль правильный тру
+      if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA) //если пароль не правильный возвращаем ошибку
+      const userData = {
+          name: existUser.name,
+          role: existUser.snils,
+        };
+
+      //создаем токен для нашего юзера и внутрь передаем данные для генер токена, к примеру имя
+      const token = await this.tokenService.genereteJwtToken(userData);
+      //получим данные нашего публичного юзера
+      const user = await this.userService.publicUser(dto.snils);
+      return {...user, token}
+    }catch (e) {throw new Error(e)}
   }
 }
