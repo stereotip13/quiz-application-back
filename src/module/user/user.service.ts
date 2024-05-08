@@ -43,4 +43,12 @@ export class UserService {
       throw new Error(e);
     }
   }
+  async deleteUser(userId: number): Promise<boolean> {
+    try {
+      await this.userRepository.destroy({ where: { id: userId } });
+      return true;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }

@@ -6,6 +6,7 @@ import configurations from './configurations';
 import { User } from './module/user/models/user.model';
 import { AuthModule } from './module/auth/auth.module';
 import { TokenModule } from './module/token/token.module';
+import { QuestionsModule } from './module/questions/questions.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TokenModule } from './module/token/token.module';
     UserModule,
     AuthModule,
     TokenModule,
+    QuestionsModule
   ],
 })
 export class AppModule {}
