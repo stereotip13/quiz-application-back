@@ -5,13 +5,14 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 export class UserController {
@@ -34,6 +35,13 @@ export class UserController {
     //ниже вызывается ф-ция которая обновляет юзера, принимает параметр для поиска (расшифрованный из jwt) и ДТО
     return this.userService.updateUser(user.snils, updateDto);
   }
+  @ApiOperation({ summary: 'Получить всех пользователей' })
+  @ApiResponse({ status: 200 })
+  @Get()
+  getAll() {
+    return this.userService.getAllUsers();
+  }
+
   @ApiTags('API users delete')
   @Delete(':id')
   deleteUser(@Param('id', ParseIntPipe) id: number): Promise<boolean> {

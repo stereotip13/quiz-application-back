@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDTO, UpdateUserDto } from './dto';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class UserService {
   constructor(
     //импортируем модель юзера из БД и возможность писать в БД данные
-    @InjectModel(User) private readonly userRepository: typeof User,
+    @InjectModel(User) private userRepository: typeof User,
+    private roleService: RolesService,
   ) {}
   async hashPassword(password) {
     return bcrypt.hash(password, 10);
@@ -19,6 +21,8 @@ export class UserService {
   }
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
     dto.password = await this.hashPassword(dto.password);
+    //прежде чем присвоить роль ее надо получить
+    dto.role = await this.roleService.getRoleByValue('user');
     await this.userRepository.create({
       password: dto.password,
       otdel: dto.otdel,
@@ -40,6 +44,13 @@ export class UserService {
     try {
       this.userRepository.update(dto, { where: { snils: snils } });
       return dto;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+  async getAllUsers() {
+    try {
+      return this.userRepository.findAll({ include: { all: true } });
     } catch (e) {
       throw new Error(e);
     }

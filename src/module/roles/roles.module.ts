@@ -11,5 +11,6 @@ import { UserRoles } from './models/user-roles.model';
   providers: [RolesService],
   //обязательно импортируем модель БД + добавляем в app.module в список моделей
   imports: [SequelizeModule.forFeature([Role, User, UserRoles])],
+  exports: [RolesService],
 })
 export class RolesModule {}

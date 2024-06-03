@@ -5,9 +5,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import { Role } from '../roles/models/roles.model';
 import { UserRoles } from '../roles/models/user-roles.model';
+import { RolesModule } from '../roles/roles.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Role, UserRoles])], //для работы с запросами к БД, forFeature -значит вся логика используется в рамках текущего модуля
+  imports: [SequelizeModule.forFeature([User, Role, UserRoles]), RolesModule], //для работы с запросами к БД, forFeature -значит вся логика используется в рамках текущего модуля
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],
