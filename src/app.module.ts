@@ -7,6 +7,9 @@ import { User } from './module/user/models/user.model';
 import { AuthModule } from './module/auth/auth.module';
 import { TokenModule } from './module/token/token.module';
 import { QuestionsModule } from './module/questions/questions.module';
+import { Role } from './module/roles/models/roles.model';
+import { UserRoles } from './module/roles/models/user-roles.model';
+import { RolesModule } from './module/roles/roles.module';
 
 @Module({
   imports: [
@@ -23,13 +26,14 @@ import { QuestionsModule } from './module/questions/questions.module';
         database: configService.get('dbName'),
         synchronize: true,
         autoLoadModels: true,
-        models: [User],
+        models: [User, Role, UserRoles],
       }),
     }),
     UserModule,
     AuthModule,
     TokenModule,
-    QuestionsModule
+    QuestionsModule,
+    RolesModule,
   ],
 })
 export class AppModule {}

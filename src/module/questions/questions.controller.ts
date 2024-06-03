@@ -7,11 +7,8 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Req,
 } from '@nestjs/common';
 import { CreateQuestionDTO } from './dto';
-
-
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionService: QuestionsService) {}

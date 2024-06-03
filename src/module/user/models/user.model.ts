@@ -1,4 +1,6 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, Model, Table } from 'sequelize-typescript';
+import { Role } from 'src/module/roles/models/roles.model';
+import { UserRoles } from 'src/module/roles/models/user-roles.model';
 
 @Table
 export class User extends Model {
@@ -7,11 +9,11 @@ export class User extends Model {
   @Column
   rating: number;
   @Column
-  role: string;
-  @Column
   name: string;
   @Column
   password: string;
   @Column
   snils: string;
+  @BelongsToMany(() => Role, () => UserRoles)
+  role: Role[];
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { CreateUserDTO } from '../user/dto';
 import { AuthService } from './auth.service';
 import { UserLoginDTO } from './dto';
@@ -10,9 +10,10 @@ import { AuthUserResponse } from './response';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: AuthService) {}
+    private readonly userService: AuthService,
+  ) {}
 
-  @ApiTags('API') //move api inside swagger
+  @ApiTags('API registr') //move api inside swagger
   @ApiResponse({ status: 201, type: AuthUserResponse }) //move api inside swagger
   @HttpCode(200)
   @Post('register')
@@ -20,13 +21,14 @@ export class AuthController {
     return this.authService.registerUsers(dto);
   }
 
-  @ApiTags('API') //move api inside swagger
-  @ApiResponse({ status: 200, type: AuthUserResponse}) //move api inside swagger
+  @ApiTags('API login') //move api inside swagger
+  @ApiResponse({ status: 200, type: AuthUserResponse }) //move api inside swagger
   @HttpCode(201)
   @Post('login')
   login(@Body() dto: UserLoginDTO): Promise<UserLoginDTO> {
     return this.authService.loginUser(dto);
   }
+  @ApiTags('API test jwt')
   @UseGuards(JwtAuthGuard)
   @Post('test')
   test() {

@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateQuestionDTO } from './dto';
 import { Questions } from './models/questions.model';
 
-
 @Injectable()
 export class QuestionsService {
   constructor(

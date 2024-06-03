@@ -11,8 +11,7 @@ export class CreateUserDTO {
   rating: number;
 
   @ApiProperty() //add info into swagger
-  @IsString()
-  role: string;
+  role: object;
 
   @ApiProperty() //add info into swagger
   @IsString()
@@ -36,8 +35,7 @@ export class UpdateUserDto {
   rating: number;
 
   @ApiProperty() //add info into swagger
-  @IsString()
-  role: string;
+  role: object;
 
   @ApiProperty() //add info into swagger
   @IsString()

@@ -12,7 +12,7 @@ export class AuthUserResponse {
 
   @ApiProperty()
   @IsString()
-  role: string;
+  role: object;
 
   @ApiProperty()
   @IsString()
@@ -28,5 +28,5 @@ export class AuthUserResponse {
 
   @ApiProperty()
   @IsString()
-  token: string
+  token: string;
 }

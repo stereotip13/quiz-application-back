@@ -7,6 +7,7 @@ import { CreateUserDTO, UpdateUserDto } from './dto';
 @Injectable()
 export class UserService {
   constructor(
+    //импортируем модель юзера из БД и возможность писать в БД данные
     @InjectModel(User) private readonly userRepository: typeof User,
   ) {}
   async hashPassword(password) {
@@ -24,7 +25,7 @@ export class UserService {
       name: dto.name,
       rating: dto.rating,
       role: dto.role,
-      snils: dto.snils
+      snils: dto.snils,
     });
     return dto;
   }

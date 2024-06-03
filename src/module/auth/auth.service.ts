@@ -18,8 +18,8 @@ export class AuthService {
       const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
       if (existUser) throw new BadRequestException(AppError.USER_EXIST); //если не нах выводим ошибку, что п сущ-т
       return this.userService.createUser(dto);
-    }catch(e){
-      throw new BadRequestException(AppError.USER_EXIST)
+    } catch (e) {
+      throw new BadRequestException(AppError.USER_EXIST);
     }
   }
   async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
@@ -31,17 +31,19 @@ export class AuthService {
         dto.password,
         existUser.password,
       ); //если пароль правильный тру
-      if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA) //если пароль не правильный возвращаем ошибку
+      if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
       const userData = {
-          name: existUser.name,
-          snils: existUser.snils,
-        };
+        role: existUser.role,
+        snils: existUser.snils,
+      };
 
-      //создаем токен для нашего юзера и внутрь передаем данные для генер токена, к примеру имя
+      //создаем токен для нашего юзера и внутрь передаем данные для генер токена: роль и снилс
       const token = await this.tokenService.genereteJwtToken(userData);
       //получим данные нашего публичного юзера
       const user = await this.userService.publicUser(dto.snils);
-      return {...user, token}
-    }catch (e) {throw new Error(e)}
+      return { ...user, token }; //копирует все собственные перечисляемые свойства из объекта user в новый объект и добавляет туда токен
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 }
