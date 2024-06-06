@@ -22,15 +22,16 @@ export class UserService {
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
     dto.password = await this.hashPassword(dto.password);
     //прежде чем присвоить роль ее надо получить
-    dto.role = await this.roleService.getRoleByValue('user');
-    await this.userRepository.create({
+    const role = await this.roleService.getRoleByValue('user');
+    const user = await this.userRepository.create({
       password: dto.password,
       otdel: dto.otdel,
       name: dto.name,
       rating: dto.rating,
-      role: dto.role,
+      role: role,
       snils: dto.snils,
     });
+    await user.$set('role',[role.id])
     return dto;
   }
   //ниже опишем способ получить юзера, не передавая пароль (приватные данные)
@@ -55,9 +56,9 @@ export class UserService {
       throw new Error(e);
     }
   }
-  async deleteUser(userId: number): Promise<boolean> {
+  async deleteUser(snils: string): Promise<boolean> {
     try {
-      await this.userRepository.destroy({ where: { id: userId } });
+      await this.userRepository.destroy({ where: { snils: snils } });
       return true;
     } catch (e) {
       throw new Error(e);

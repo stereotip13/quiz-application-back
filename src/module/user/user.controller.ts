@@ -43,8 +43,8 @@ export class UserController {
   }
 
   @ApiTags('API users delete')
-  @Delete(':id')
-  deleteUser(@Param('id', ParseIntPipe) id: number): Promise<boolean> {
-    return this.userService.deleteUser(id);
+  @Delete(':snils')
+  deleteUser(@Param('snils') snils:string ): Promise<boolean> {
+    return this.userService.deleteUser(snils);
   }
 }
