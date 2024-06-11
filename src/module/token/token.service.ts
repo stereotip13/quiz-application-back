@@ -8,7 +8,7 @@ export class TokenService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
-  async genereteJwtToken(user) {
+   async genereteJwtToken(user) {
     const payload = { user };//данные, которые помещаются в токен
     return this.jwtService.sign(payload, {
       secret: this.configService.get('secret_jwt'),//параметр секретный ключ для токена

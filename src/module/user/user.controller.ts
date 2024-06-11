@@ -7,7 +7,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Req,
   UseGuards,
@@ -22,8 +21,9 @@ export class UserController {
   //   console.log(dto);
   //   return this.userService.createUser(dto);
   // }
-  @ApiTags('API users')
+  @ApiTags('API user update')
   @ApiResponse({ status: 200, type: UpdateUserDto })
+  @ApiOperation({ summary: 'Обновить пользователя' })
   @UseGuards(JwtAuthGuard)
   @Patch()
   updateUser(
@@ -35,6 +35,7 @@ export class UserController {
     //ниже вызывается ф-ция которая обновляет юзера, принимает параметр для поиска (расшифрованный из jwt) и ДТО
     return this.userService.updateUser(user.snils, updateDto);
   }
+  @ApiTags('API get all users')
   @ApiOperation({ summary: 'Получить всех пользователей' })
   @ApiResponse({ status: 200 })
   @Get()

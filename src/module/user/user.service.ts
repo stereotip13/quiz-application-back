@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDTO, UpdateUserDto } from './dto';
+import { AddRoleDto, CreateUserDTO, UpdateUserDto } from './dto';
 import { RolesService } from '../roles/roles.service';
 
 @Injectable()
@@ -34,6 +34,7 @@ export class UserService {
     await user.$set('role',[role.id])
     return dto;
   }
+
   //ниже опишем способ получить юзера, не передавая пароль (приватные данные)
   async publicUser(snils: string) {
     return this.userRepository.findOne({
@@ -55,6 +56,15 @@ export class UserService {
     } catch (e) {
       throw new Error(e);
     }
+  }
+  async addRole(dto: AddRoleDto){
+    const user = await this.userRepository.findByPk(dto.userId)
+    const role = await this.roleService.getRoleByValue(dto.value)
+    if (role && user){
+      await user.$add('role', role.id)
+      return dto
+    }
+    throw new HttpException('Пользователь или роль не найдены', HttpStatus.NOT_FOUND)
   }
   async deleteUser(snils: string): Promise<boolean> {
     try {

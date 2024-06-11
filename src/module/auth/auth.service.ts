@@ -13,6 +13,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
   ) {}
+  //dto: название ДТО используется для проверки входящих данных
   async registerUsers(dto: CreateUserDTO): Promise<CreateUserDTO> {
     try {
       const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных

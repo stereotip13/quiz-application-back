@@ -5,6 +5,8 @@ import { UserLoginDTO } from './dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guards/jwt-guard';
 import { AuthUserResponse } from './response';
+import { Roles } from 'src/guards/roles-auth.decorator';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +31,8 @@ export class AuthController {
     return this.authService.loginUser(dto);
   }
   @ApiTags('API test jwt')
+  @Roles('admin')
+  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
   @Post('test')
   test() {
