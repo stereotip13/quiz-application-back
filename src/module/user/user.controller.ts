@@ -1,5 +1,5 @@
 import { JwtAuthGuard } from 'src/guards/jwt-guard';
-import { UpdateUserDto } from './dto';
+import { AddRoleDto, UpdateUserDto } from './dto';
 import { UserService } from './user.service';
 import {
   Body,
@@ -8,10 +8,13 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/guards/roles-auth.decorator';
 
 @Controller('users')
 export class UserController {
@@ -43,7 +46,16 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
+  @ApiOperation({summary:'выдать роль'})
+  @ApiResponse({status:200})
+  @Post('/role')
+  addRole(@Body() dto:AddRoleDto){
+    return this.userService.addRole(dto)
+  }
+
   @ApiTags('API users delete')
+  @Roles('admin')//сначала указываем роль, по которой ограничим
+  @UseGuards(RolesGuard)
   @Delete(':snils')
   deleteUser(@Param('snils') snils:string ): Promise<boolean> {
     return this.userService.deleteUser(snils);

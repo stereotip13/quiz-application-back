@@ -47,7 +47,7 @@ export class UpdateUserDto {
 }
 export class AddRoleDto {
   @IsString({message: "Должно быть строкой"})
-  readonly value:string;
-  @IsNumber({},{message:"Должно быть числом"})
-  readonly userId:number;
+  readonly role:string;
+  @IsString({message:"Должно быть строкой"})
+  readonly snils:string;
 }

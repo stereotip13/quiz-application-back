@@ -6,11 +6,17 @@ import { User } from './models/user.model';
 import { Role } from '../roles/models/roles.model';
 import { UserRoles } from '../roles/models/user-roles.model';
 import { RolesModule } from '../roles/roles.module';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { TokenModule } from '../token/token.module';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtStrategy } from 'src/strategy';
+
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Role, UserRoles]), RolesModule], //для работы с запросами к БД, forFeature -значит вся логика используется в рамках текущего модуля
+  imports: [SequelizeModule.forFeature([User, Role, UserRoles]), RolesModule, // Добавляем JwtModule в импорты
+    ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService,JwtStrategy,JwtService,RolesGuard],
   exports: [UserService],
 })
 export class UserModule {}

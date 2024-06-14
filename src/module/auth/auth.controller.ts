@@ -33,7 +33,6 @@ export class AuthController {
   @ApiTags('API test jwt')
   @Roles('admin')
   @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
   @Post('test')
   test() {
     return true;

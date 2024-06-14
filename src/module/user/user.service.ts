@@ -22,7 +22,7 @@ export class UserService {
   async createUser(dto: CreateUserDTO): Promise<CreateUserDTO> {
     dto.password = await this.hashPassword(dto.password);
     //прежде чем присвоить роль ее надо получить
-    const role = await this.roleService.getRoleByValue('user');
+    const role = await this.roleService.getRoleByValue('admin');
     const user = await this.userRepository.create({
       password: dto.password,
       otdel: dto.otdel,
@@ -58,8 +58,9 @@ export class UserService {
     }
   }
   async addRole(dto: AddRoleDto){
-    const user = await this.userRepository.findByPk(dto.userId)
-    const role = await this.roleService.getRoleByValue(dto.value)
+    const user = await this.userRepository.findOne({where:{snils:dto.snils}})
+    const role = await this.roleService.getRoleByValue(dto.role)
+    console.log('пользовател',user)
     if (role && user){
       await user.$add('role', role.id)
       return dto

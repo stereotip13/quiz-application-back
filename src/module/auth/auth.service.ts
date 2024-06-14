@@ -6,12 +6,14 @@ import { AppError } from 'src/common/constants/errors';
 import { UserLoginDTO } from './dto';
 import * as bcrypt from 'bcrypt';
 import { AuthUserResponse } from './response';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
+    private readonly roleService: RolesService,
   ) {}
   //dto: название ДТО используется для проверки входящих данных
   async registerUsers(dto: CreateUserDTO): Promise<CreateUserDTO> {
@@ -26,21 +28,25 @@ export class AuthService {
   async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
     try {
       const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
+      const userRole = await this.roleService.getUserRoleByValue(existUser.id)
+      let urole
+      if (userRole.roleId===2) {urole = "admin"} else if (userRole.roleId===1) {urole = 'user' }
       if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST); //если не нах выводим ошибку, что п не сущ-т
       //валадция пароля
       const validatePassword = await bcrypt.compare(
         dto.password,
         existUser.password,
       ); //если пароль правильный тру
+      console.log("данные из таблицы user-role",userRole.roleId)
       if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
       const userData = {
-        role: existUser.role,
+        role: urole,
         snils: existUser.snils,
       };
 
       //создаем токен для нашего юзера и внутрь передаем данные для генер токена: роль и снилс
       const token = await this.tokenService.genereteJwtToken(userData);
-      //получим данные нашего публичного юзера
+      //получим данные нашего публичного юзера, то есть без пароля
       const user = await this.userService.publicUser(dto.snils);
       return { ...user, token }; //копирует все собственные перечисляемые свойства из объекта user в новый объект и добавляет туда токен
     } catch (e) {
