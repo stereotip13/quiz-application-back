@@ -3,10 +3,11 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable, U
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './roles-auth.decorator';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-    constructor(private jwtService:JwtService,
+    constructor(private jwtService:JwtService, private readonly configService: ConfigService,
         private reflector:Reflector
     ){
     }
@@ -28,6 +29,7 @@ export class RolesGuard implements CanActivate {
                 throw new UnauthorizedException({message: 'Пользователь не авторизован'})
             }
             console.log(token)
+            const secretOrKey: configService('secret_jwt')
             const user = this.jwtService.verify(token, {secret:'EbatKakoySecret'});//тут ошибка
             console.log(user)
             req.user = user
