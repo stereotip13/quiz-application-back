@@ -11,6 +11,7 @@ export class RolesGuard implements CanActivate {
         private reflector:Reflector
     ){
     }
+
     //суть фции canActivate когда она возвращает тру доступ разрешен
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         try{
@@ -28,12 +29,17 @@ export class RolesGuard implements CanActivate {
             if (bearer !== 'Bearer' || !token) {
                 throw new UnauthorizedException({message: 'Пользователь не авторизован'})
             }
-            console.log(token)
-            const secretOrKey: configService('secret_jwt')
-            const user = this.jwtService.verify(token, {secret:'EbatKakoySecret'});//тут ошибка
-            console.log(user)
+            console.log("токен который есть",token)
+            const secretOrKey = this.configService.get('secret_jwt')
+            const user = this.jwtService.verify(token, {secret:secretOrKey});//тут ошибка
             req.user = user
-            return user.roles.some(role=>requiredRoles.includes(role.value))
+            console.log("роль юзера",user.user.role
+            )
+
+            //Проверяем, соответствует ли роль пользователя одной из требуемых ролей
+            const hasRole = requiredRoles.includes(user.user.role); // Используем user.user.role, т.к. роль находится во вложенном объекте user
+            return hasRole
+            //return user.role.some(role=>requiredRoles.includes(role.value))
         } catch (e){
             console.log(e)
             if (e instanceof TokenExpiredError) {

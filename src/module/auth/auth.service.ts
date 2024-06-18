@@ -30,7 +30,7 @@ export class AuthService {
       const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
       const userRole = await this.roleService.getUserRoleByValue(existUser.id)
       let urole
-      if (userRole.roleId===2) {urole = "admin"} else if (userRole.roleId===1) {urole = 'user' }
+      if (userRole.roleId===2) {urole = "admin"} else if (userRole.roleId===1) {urole = 'user' } else if (userRole.roleId===3) {urole = 'redaktor' }
       if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST); //если не нах выводим ошибку, что п не сущ-т
       //валадция пароля
       const validatePassword = await bcrypt.compare(
