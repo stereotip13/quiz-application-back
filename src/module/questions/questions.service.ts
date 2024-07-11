@@ -41,4 +41,11 @@ export class QuestionsService {
       throw new Error(e);
     }
   }
+  async getAllQuestion() {
+    try {
+      return this.questionRepository.findAll({ include: { all: true } });
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }

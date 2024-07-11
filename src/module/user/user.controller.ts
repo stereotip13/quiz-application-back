@@ -24,7 +24,7 @@ export class UserController {
   //   console.log(dto);
   //   return this.userService.createUser(dto);
   // }
-  @ApiTags('API user update')
+  @ApiTags('Users Api')
   @ApiResponse({ status: 200, type: UpdateUserDto })
   @ApiOperation({ summary: 'Обновить пользователя' })
   @UseGuards(JwtAuthGuard)
@@ -38,22 +38,23 @@ export class UserController {
     //ниже вызывается ф-ция которая обновляет юзера, принимает параметр для поиска (расшифрованный из jwt) и ДТО
     return this.userService.updateUser(user.snils, updateDto);
   }
-  @ApiTags('API get all users')
+  @ApiTags('Users Api')
   @ApiOperation({ summary: 'Получить всех пользователей' })
   @ApiResponse({ status: 200 })
   @Get()
   getAll() {
     return this.userService.getAllUsers();
   }
-
-  @ApiOperation({summary:'выдать роль'})
+  @ApiTags('Users Api')
+  @ApiOperation({summary:'изменить роль'})
   @ApiResponse({status:200})
   @Post('/role')
   addRole(@Body() dto:AddRoleDto){
     return this.userService.addRole(dto)
   }
 
-  @ApiTags('API users delete')
+  @ApiTags('Users Api')
+  @ApiOperation({summary:'удаление пользователя по номеру СНИЛС'})
   @Roles('admin')//сначала указываем роль, по которой ограничим
   @UseGuards(RolesGuard)
   @Delete(':snils')

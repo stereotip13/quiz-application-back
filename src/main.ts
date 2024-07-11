@@ -9,6 +9,11 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
     const PORT = configService.get('port');
+    app.enableCors({
+      origin: 'http://localhost:5173', // Указывает, с какого origin разрешены запросы
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      allowedHeaders: 'Content-Type, Authorization',
+    });
     app.useGlobalPipes(new ValidationPipe()); //у экземпляра приложения делаем валидацию и добавляем DTO
     const config = new DocumentBuilder()
       .setTitle('QUIZ API')
