@@ -29,7 +29,7 @@ export class AuthController {
   @ApiResponse({ status: 200, type: AuthUserResponse }) //move api inside swagger
   @HttpCode(201)
   @Post('login')
-  login(@Body() dto: UserLoginDTO): Promise<UserLoginDTO> {
+  login(@Body() dto: CreateUserDTO): Promise<CreateUserDTO> {
     return this.authService.loginUser(dto);
   }
   @ApiTags('Auth API')

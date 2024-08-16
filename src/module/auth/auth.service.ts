@@ -25,23 +25,31 @@ export class AuthService {
       throw new BadRequestException(AppError.USER_EXIST);
     }
   }
-  async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
+  async loginUser(dto: CreateUserDTO): Promise<AuthUserResponse> {
     try {
+      let urole;
+      let userSnils;
       const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
-      const userRole = await this.roleService.getUserRoleByValue(existUser.id)
-      let urole
-      if (userRole.roleId===2) {urole = "admin"} else if (userRole.roleId===1) {urole = 'user' } else if (userRole.roleId===3) {urole = 'redaktor' }
-      if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST); //если не нах выводим ошибку, что п не сущ-т
-      //валадция пароля
-      const validatePassword = await bcrypt.compare(
-        dto.password,
-        existUser.password,
-      ); //если пароль правильный тру
-      console.log("данные из таблицы user-role",userRole.roleId)
-      if (!validatePassword) throw new BadRequestException(AppError.WRONG_DATA); //если пароль не правильный возвращаем ошибку
+      if (!existUser) {
+        this.userService.createUser(dto);
+        urole = dto.role;
+        userSnils = dto.snils;
+      } else {
+        userSnils = existUser.snils;
+        const userRole = await this.roleService.getUserRoleByValue(
+          existUser.id,
+        );
+        if (userRole.roleId === 2) {
+          urole = 'admin';
+        } else if (userRole.roleId === 1) {
+          urole = 'user';
+        } else if (userRole.roleId === 3) {
+          urole = 'redaktor';
+        }
+      }
       const userData = {
         role: urole,
-        snils: existUser.snils,
+        snils: userSnils,
       };
 
       //создаем токен для нашего юзера и внутрь передаем данные для генер токена: роль и снилс
