@@ -22,7 +22,7 @@ async function bootstrap() {
       .addTag('API')
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('api', app, document); //запуск сваггера с параметрами, первая это путь
     await app.listen(PORT, () => console.log(`server started on port ${PORT}`));
   } catch (e) {
     console.log(e);

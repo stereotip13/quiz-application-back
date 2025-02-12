@@ -1,13 +1,12 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { CreateUserDTO } from '../user/dto';
 import { AuthService } from './auth.service';
-import { UserLoginDTO } from './dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/guards/jwt-guard';
+//import { JwtAuthGuard } from 'src/guards/jwt-guard';
 import { AuthUserResponse } from './response';
 import { Roles } from 'src/guards/roles-auth.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
-
+import { UserLoginDTO } from './dto';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -29,7 +28,7 @@ export class AuthController {
   @ApiResponse({ status: 200, type: AuthUserResponse }) //move api inside swagger
   @HttpCode(201)
   @Post('login')
-  login(@Body() dto: CreateUserDTO): Promise<CreateUserDTO> {
+  login(@Body() dto: UserLoginDTO): Promise<CreateUserDTO> {
     return this.authService.loginUser(dto);
   }
   @ApiTags('Auth API')

@@ -46,8 +46,8 @@ export class UpdateUserDto {
   snils: string;
 }
 export class AddRoleDto {
-  @IsString({message: "Должно быть строкой"})
-  readonly role:string;
-  @IsString({message:"Должно быть строкой"})
-  readonly snils:string;
+  @IsString({ message: 'Должно быть строкой' })
+  readonly role: string;
+  @IsString({ message: 'Должно быть строкой' })
+  readonly snils: string;
 }

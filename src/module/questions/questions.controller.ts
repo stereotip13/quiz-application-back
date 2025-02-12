@@ -16,7 +16,7 @@ export class QuestionsController {
 
   @ApiTags('question Api')
   @ApiResponse({ status: 201, type: CreateQuestionDTO })
-  @ApiOperation({ summary: 'Получить все вопросы из БД' })
+  @ApiOperation({ summary: 'Добавить новый вопрос' })
   @Post('crquest')
   crquest(@Body() dto: CreateQuestionDTO): Promise<CreateQuestionDTO> {
     return this.questionService.createQuestion(dto);

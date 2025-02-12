@@ -25,14 +25,25 @@ export class AuthService {
       throw new BadRequestException(AppError.USER_EXIST);
     }
   }
-  async loginUser(dto: CreateUserDTO): Promise<AuthUserResponse> {
+  async loginUser(dto: UserLoginDTO): Promise<AuthUserResponse> {
     try {
       let urole;
       let userSnils;
-      const existUser = await this.userService.findUserBySnils(dto.snils); //ищем пользователя в базе данных
+      const existUser = await this.userService.findUserBySnils(dto.snils);
+      //если пользователь не найден в базе данных, создаем нового пользователя
+      //с базовыми значениями: пустой отдел, нулевой рейтинг, пустое имя и роль user
+      //используем данные из dto (snils и password) которые пришли при попытке логина
       if (!existUser) {
-        this.userService.createUser(dto);
-        urole = dto.role;
+        const newUserDto: CreateUserDTO = {
+          snils: dto.snils,
+          password: dto.password,
+          otdel: '',
+          rating: 0,
+          name: dto.name,
+          role: {}, // Роль будет установлена через roleService в createUser
+        };
+        await this.userService.createUser(newUserDto);
+        urole = 'user';
         userSnils = dto.snils;
       } else {
         userSnils = existUser.snils;
@@ -56,7 +67,8 @@ export class AuthService {
       const token = await this.tokenService.genereteJwtToken(userData);
       //получим данные нашего публичного юзера, то есть без пароля
       const user = await this.userService.publicUser(dto.snils);
-      return { ...user, token }; //копирует все собственные перечисляемые свойства из объекта user в новый объект и добавляет туда токен
+      if (!user) throw new Error('User not found');
+      return { ...user, token };
     } catch (e) {
       throw new Error(e);
     }

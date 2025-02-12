@@ -11,6 +11,6 @@ import { RolesModule } from '../roles/roles.module';
 @Module({
   imports: [UserModule, TokenModule, RolesModule],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy,JwtService, RolesGuard,],
+  providers: [AuthService, JwtStrategy, JwtService, RolesGuard],
 })
 export class AuthModule {}

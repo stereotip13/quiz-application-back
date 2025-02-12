@@ -46,19 +46,19 @@ export class UserController {
     return this.userService.getAllUsers();
   }
   @ApiTags('Users Api')
-  @ApiOperation({summary:'изменить роль'})
-  @ApiResponse({status:200})
+  @ApiOperation({ summary: 'изменить роль' })
+  @ApiResponse({ status: 200 })
   @Post('/role')
-  addRole(@Body() dto:AddRoleDto){
-    return this.userService.addRole(dto)
+  addRole(@Body() dto: AddRoleDto) {
+    return this.userService.addRole(dto);
   }
 
   @ApiTags('Users Api')
-  @ApiOperation({summary:'удаление пользователя по номеру СНИЛС'})
-  @Roles('admin')//сначала указываем роль, по которой ограничим
+  @ApiOperation({ summary: 'удаление пользователя по номеру СНИЛС' })
+  @Roles('admin') //сначала указываем роль, по которой ограничим
   @UseGuards(RolesGuard)
   @Delete(':snils')
-  deleteUser(@Param('snils') snils:string ): Promise<boolean> {
+  deleteUser(@Param('snils') snils: string): Promise<boolean> {
     return this.userService.deleteUser(snils);
   }
 }

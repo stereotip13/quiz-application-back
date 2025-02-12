@@ -10,4 +10,7 @@ export class UserLoginDTO {
   @IsString()
   password: string;
 
+  @ApiProperty() //add info into swagger
+  @IsString()
+  name: string;
 }

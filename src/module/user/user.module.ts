@@ -11,12 +11,10 @@ import { TokenModule } from '../token/token.module';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from 'src/strategy';
 
-
 @Module({
-  imports: [SequelizeModule.forFeature([User, Role, UserRoles]), RolesModule, // Добавляем JwtModule в импорты
-    ],
+  imports: [SequelizeModule.forFeature([User, Role, UserRoles]), RolesModule],
   controllers: [UserController],
-  providers: [UserService,JwtStrategy,JwtService,RolesGuard],
+  providers: [UserService, JwtStrategy, JwtService, RolesGuard],
   exports: [UserService],
 })
 export class UserModule {}
