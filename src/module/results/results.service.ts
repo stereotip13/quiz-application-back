@@ -42,4 +42,16 @@ export class ResultsService {
       include: { all: true },
     });
   }
+
+  async getUserResults(snils: string): Promise<Result[]> {
+    const user = await this.userService.findUserBySnils(snils);
+    if (!user) {
+      throw new NotFoundException(`User with SNILS ${snils} not found`);
+    }
+    return await this.resultRepository.findAll({
+      where: { user_id: user.id },
+      include: { all: true },
+      order: [['timestamp', 'DESC']], // Сортировка по времени, новые первыми
+    });
+  }
 }

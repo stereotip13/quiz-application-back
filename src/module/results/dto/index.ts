@@ -11,6 +11,11 @@ export class CreateResultsDTO {
   readonly user_results: number;
 }
 
+export class GetOneUserResultsDTO {
+  @ApiProperty({ example: '12345678901', description: 'User SNILS' })
+  @IsString()
+  readonly snils: string;
+}
 export class UpdateResultsDTO {
   @ApiProperty({ example: 85, description: 'User test results' })
   @IsNumber()
